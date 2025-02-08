@@ -1,9 +1,10 @@
 # frozen_string_literal: true
 
 source 'https://rubygems.org'
+gemspec
 
-gem 'bigdecimal', '3.0.0'
-gem 'rubocop', require: false
-gem 'sorbet', group: :development
-gem 'sorbet-runtime'
-gem 'tapioca', require: false, group: %i[development test]
+group :development do
+  gem 'rubocop', require: false
+  gem 'sorbet'
+  gem 'tapioca', require: false
+end

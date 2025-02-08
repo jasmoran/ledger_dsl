@@ -1,3 +1,10 @@
+PATH
+  remote: .
+  specs:
+    ledger_dsl (0.1.0)
+      bigdecimal (= 3.0.0)
+      sorbet-runtime
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -35,8 +42,6 @@ GEM
     sorbet (0.5.11802)
       sorbet-static (= 0.5.11802)
     sorbet-runtime (0.5.11802)
-    sorbet-static (0.5.11802-aarch64-linux)
-    sorbet-static (0.5.11802-universal-darwin)
     sorbet-static (0.5.11802-x86_64-linux)
     sorbet-static-and-runtime (0.5.11802)
       sorbet (= 0.5.11802)
@@ -72,10 +77,9 @@ PLATFORMS
   x86_64-linux
 
 DEPENDENCIES
-  bigdecimal (= 3.0.0)
+  ledger_dsl!
   rubocop
   sorbet
-  sorbet-runtime
   tapioca
 
 BUNDLED WITH
