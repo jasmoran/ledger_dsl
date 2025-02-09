@@ -32,8 +32,11 @@ Gem::Specification.new do |spec|
   spec.require_paths = ['lib']
 
   # Uncomment to register a new dependency of your gem
-  spec.add_dependency 'bigdecimal', '3.0.0'
-  spec.add_dependency 'sorbet-runtime'
+  spec.add_runtime_dependency 'bigdecimal', '3.0.0'
+  spec.add_runtime_dependency 'sorbet-runtime'
+  spec.add_development_dependency 'rubocop'
+  spec.add_development_dependency 'sorbet'
+  spec.add_development_dependency 'tapioca'
 
   # For more information and examples about making a new gem, check out our
   # guide at: https://bundler.io/guides/creating_gem.html
