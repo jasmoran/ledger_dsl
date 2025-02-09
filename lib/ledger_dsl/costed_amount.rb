@@ -5,6 +5,7 @@ require 'sorbet-runtime'
 require 'bigdecimal'
 
 require_relative 'amount'
+require_relative 'unit'
 
 # DSL for creating financial journals
 module LedgerDSL
@@ -64,6 +65,20 @@ module LedgerDSL
       else
         amount
       end
+    end
+
+    sig { params(amount: ToAmount, unit: Unit).returns(CostedAmount) }
+    def total_cost(amount, unit = EMPTY_UNIT)
+      @cost = Amount.from(amount, unit)
+      @type = CostType::Total
+      self
+    end
+
+    sig { params(amount: ToAmount, unit: Unit).returns(CostedAmount) }
+    def unit_cost(amount, unit = EMPTY_UNIT)
+      @cost = Amount.from(amount, unit)
+      @type = CostType::Unit
+      self
     end
   end
 

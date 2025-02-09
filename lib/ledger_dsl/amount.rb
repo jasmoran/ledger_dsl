@@ -36,11 +36,20 @@ module LedgerDSL
       @unit = T.let(unit, Unit)
     end
 
-    sig { params(amount: ToAmount).returns(Amount) }
-    def self.from(amount)
-      return amount if amount.is_a?(Amount)
+    sig { returns(BigDecimal) }
+    attr_reader :value
 
-      Amount.new(amount)
+    sig { returns(Unit) }
+    attr_reader :unit
+
+    sig { params(amount: ToAmount, unit: Unit).returns(Amount) }
+    def self.from(amount, unit = EMPTY_UNIT)
+      if amount.is_a?(Amount)
+        unit = amount.unit if unit == EMPTY_UNIT
+        amount = amount.value
+      end
+
+      Amount.new(amount, unit)
     end
 
     sig { returns(String) }
