@@ -1,8 +1,0 @@
-AllCops:
-  TargetRubyVersion: 3.0
-
-Metrics:
-  Enabled: false
-
-Style/Semicolon:
-  Enabled: false

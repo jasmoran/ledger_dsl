@@ -1,5 +1,0 @@
---dir
-.
---ignore=/tmp/
---ignore=/vendor/bundle
---disable-watchman
