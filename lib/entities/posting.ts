@@ -27,23 +27,13 @@ export class Posting {
    */
   constructor(
     account: string,
-    {
-      status = Status.Unmarked,
-      amount = null,
-      balance = null,
-      comment = null,
-      date = null,
-      date2 = null,
-      ...tags
-    }: {
-      status?: Status;
-      amount?: ToCostedAmount | null;
-      balance?: ToCostedAmount | null;
-      comment?: ToComment | null;
-      date?: Date | string | null;
-      date2?: Date | string | null;
-      [key: string]: any;
-    } = {},
+    status: Status = Status.Unmarked,
+    amount: ToCostedAmount | null = null,
+    balance: ToCostedAmount | null = null,
+    comment: ToComment | null = null,
+    date: Date | string | null = null,
+    date2: Date | string | null = null,
+    tags: Record<string, string> = {},
   ) {
     this.account = account;
     this.status = status;
