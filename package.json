@@ -1,5 +1,9 @@
 {
   "devDependencies": {
+    "@tsconfig/strictest": "^2.0.5",
     "prettier": "3.5.2"
+  },
+  "dependencies": {
+    "decimal.js": "10.5.0"
   }
 }
