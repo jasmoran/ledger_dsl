@@ -7,8 +7,8 @@ import { Comment } from "./comment";
 export class Journal {
   #entries: (Transaction | Comment)[];
 
-  constructor() {
-    this.#entries = [];
+  constructor(entries: Array<Transaction | Comment> = []) {
+    this.#entries = [...entries];
   }
 
   /**

@@ -11,23 +11,38 @@ export class Transaction {
   public code: string | null = null;
   public payee: string | null = null;
   public note: string | null = null;
-  public tags: Map<string, string>;
+  public tags: Map<string, string> = new Map();
   #entries: Array<Posting | Comment>;
 
   constructor(
     date: Date | string,
-    status: Status = Status.Unmarked,
+    status?: Status,
+    code?: string | null,
+    payee?: string | null,
+    note?: string | null,
+    tags?: Record<string, string>,
+  );
+  constructor(date: Date | string, entries: Array<Posting | Comment>);
+  constructor(
+    date: Date | string,
+    statusOrEntries: Status | Array<Posting | Comment> = Status.Unmarked,
     code: string | null = null,
     payee: string | null = null,
     note: string | null = null,
-    tags: Map<string, string> = new Map(),
+    tags: Record<string, string> = {},
   ) {
     this.#date = new Date(date);
-    this.status = status;
     this.code = code;
     this.payee = payee;
     this.note = note;
-    this.tags = tags;
+    this.tags = new Map(Object.entries(tags));
+
+    if (Array.isArray(statusOrEntries)) {
+      this.status = Status.Unmarked;
+      this.#entries = [...statusOrEntries];
+      return;
+    }
+    this.status = statusOrEntries;
     this.#entries = [];
   }
 

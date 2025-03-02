@@ -5,6 +5,7 @@ import { Posting } from "../entities/posting";
 import { Status } from "../entities/status";
 import { Transaction } from "../entities/transaction";
 
+type JournalBlock = (journal: JournalDSL) => void;
 type TransactionBlock = (transaction: TransactionDSL) => void;
 type PostingBlock = (posting: Posting) => void;
 
@@ -117,8 +118,19 @@ class JournalDSL extends Journal {
     code?: string | null,
     payee?: string | null,
     note?: string | null,
-    tags?: Map<string, string>,
-  ): Transaction;
+    tags?: Record<string, string>,
+  ): TransactionDSL;
+  /**
+   * Adds a transaction to the journal.
+   *
+   * @param date - The date of the transaction.
+   * @param entries - The entries to add to the transaction.
+   * @returns The new transaction.
+   */
+  transaction(
+    date: Date | string,
+    entries: Array<Posting | Comment>,
+  ): TransactionDSL;
   /**
    * Adds a transaction to the journal.
    *
@@ -126,24 +138,32 @@ class JournalDSL extends Journal {
    * @param block - Function that builds the transaction.
    * @returns The new transaction.
    */
-  transaction(date: Date | string, block: TransactionBlock): Transaction;
+  transaction(date: Date | string, block: TransactionBlock): TransactionDSL;
   transaction(
     date: Date | string,
-    statusOrBlock: Status | TransactionBlock = Status.Unmarked,
+    statusOrBlockOrEntries:
+      | Status
+      | TransactionBlock
+      | Array<Posting | Comment> = Status.Unmarked,
     code: string | null = null,
     payee: string | null = null,
     note: string | null = null,
-    tags: Map<string, string> = new Map(),
-  ): Transaction {
-    if (typeof statusOrBlock === "function") {
+    tags: Record<string, string> = {},
+  ): TransactionDSL {
+    if (Array.isArray(statusOrBlockOrEntries)) {
+      const transaction = new TransactionDSL(date, statusOrBlockOrEntries);
+      this.addEntry(transaction);
+      return transaction;
+    }
+    if (typeof statusOrBlockOrEntries === "function") {
       const transaction = new TransactionDSL(date);
       this.addEntry(transaction);
-      statusOrBlock(transaction);
+      statusOrBlockOrEntries(transaction);
       return transaction;
     }
     const transaction = new TransactionDSL(
       date,
-      statusOrBlock,
+      statusOrBlockOrEntries,
       code,
       payee,
       note,
@@ -184,9 +204,27 @@ class JournalDSL extends Journal {
   public co = this.comment;
 }
 
-export function journal(block: (journal: JournalDSL) => void): Journal {
+/**
+ * Creates a new journal.
+ *
+ * @param entries - The entries to add to the journal.
+ */
+export function journal(entries: Array<Transaction | Comment>): JournalDSL;
+/**
+ * Creates a new journal.
+ *
+ * @param block - Function that builds the journal.
+ * @returns The new journal.
+ */
+export function journal(block: (journal: JournalDSL) => void): JournalDSL;
+export function journal(
+  blockOrEntries: JournalBlock | Array<Transaction | Comment>,
+): JournalDSL {
+  if (Array.isArray(blockOrEntries)) {
+    return new JournalDSL(blockOrEntries);
+  }
   const journal = new JournalDSL();
-  block(journal);
+  blockOrEntries(journal);
   return journal;
 }
 export const j = journal;
