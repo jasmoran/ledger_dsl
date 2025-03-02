@@ -48,7 +48,7 @@ export class Transaction {
   /**
    * Add an entry to the transaction.
    */
-  public addEntry(entry: Posting | Comment): void {
+  protected addEntry(entry: Posting | Comment): void {
     this.#entries.push(entry);
   }
 

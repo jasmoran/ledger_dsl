@@ -14,7 +14,7 @@ export class Journal {
   /**
    * Adds an entry to the journal.
    */
-  public addEntry(entry: Transaction | Comment): void {
+  protected addEntry(entry: Transaction | Comment): void {
     this.#entries.push(entry);
   }
 
