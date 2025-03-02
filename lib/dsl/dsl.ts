@@ -229,3 +229,162 @@ export function journal(
 }
 export const j = journal;
 export const jo = journal;
+
+/**
+ * Creates a comment.
+ *
+ * @param comment - The comment to copy.
+ */
+export function comment(comment: Comment): Comment;
+/**
+ * Creates a comment.
+ *
+ * @param text - The comment text.
+ */
+export function comment(text: string): Comment;
+/**
+ * Creates a comment.
+ *
+ * @param toComment - The value to convert to a comment.
+ */
+export function comment(toComment: ToComment): Comment;
+export function comment(a: ToComment): Comment {
+  return new Comment(a);
+}
+
+export const c = comment;
+export const co = comment;
+
+/**
+ * Creates a transaction.
+ *
+ * @param date - The date of the transaction.
+ * @param status - The status of the transaction.
+ * @param code - The code of the transaction.
+ * @param payee - The payee of the transaction.
+ * @param note - The note of the transaction.
+ * @param tags - The tags of the transaction.
+ * @returns The new transaction.
+ */
+export function transaction(
+  date: Date | string,
+  status?: Status,
+  code?: string | null,
+  payee?: string | null,
+  note?: string | null,
+  tags?: Record<string, string>,
+): TransactionDSL;
+/**
+ * Creates a transaction.
+ *
+ * @param date - The date of the transaction.
+ * @param entries - The entries to add to the transaction.
+ * @returns The new transaction.
+ */
+export function transaction(
+  date: Date | string,
+  entries: Array<Posting | Comment>,
+): TransactionDSL;
+/**
+ * Creates a transaction.
+ *
+ * @param date - The date of the transaction.
+ * @param block - Function that builds the transaction.
+ * @returns The new transaction.
+ */
+export function transaction(
+  date: Date | string,
+  block: TransactionBlock,
+): TransactionDSL;
+export function transaction(
+  date: Date | string,
+  statusOrBlockOrEntries:
+    | Status
+    | TransactionBlock
+    | Array<Posting | Comment> = Status.Unmarked,
+  code: string | null = null,
+  payee: string | null = null,
+  note: string | null = null,
+  tags: Record<string, string> = {},
+): TransactionDSL {
+  if (Array.isArray(statusOrBlockOrEntries)) {
+    return new TransactionDSL(date, statusOrBlockOrEntries);
+  }
+  if (typeof statusOrBlockOrEntries === "function") {
+    const transaction = new TransactionDSL(date);
+    statusOrBlockOrEntries(transaction);
+    return transaction;
+  }
+  const transaction = new TransactionDSL(
+    date,
+    statusOrBlockOrEntries,
+    code,
+    payee,
+    note,
+    tags,
+  );
+  return transaction;
+}
+
+export const t = transaction;
+export const tr = transaction;
+
+/**
+ * Creates a posting.
+ *
+ * @param account - The account name
+ * @param status - The posting status. Default is Status.Unmarked.
+ * @param amount - The amount of the posting. Default is null.
+ * @param balance - The balance after the posting. Default is null.
+ * @param comment - A comment for the posting. Default is null.
+ * @param date - A date associated with the posting. Default is null.
+ * @param date2 - A secondary date associated with the posting. Default is null.
+ * @param tags - Additional tags for the posting.
+ */
+export function posting(
+  account: string,
+  status?: Status,
+  amount?: ToCostedAmount | null,
+  balance?: ToCostedAmount | null,
+  comment?: ToComment | null,
+  date?: Date | string | null,
+  date2?: Date | string | null,
+  tags?: Record<string, string>,
+): Posting;
+/**
+ * Creates a posting.
+ *
+ * @param account - The account name
+ * @param block - Function that builds the posting.
+ */
+export function posting(account: string, block: PostingBlock): Posting;
+export function posting(
+  account: string,
+  statusOrBlock: Status | PostingBlock = Status.Unmarked,
+  amount: ToCostedAmount | null = null,
+  balance: ToCostedAmount | null = null,
+  comment: ToComment | null = null,
+  date: Date | string | null = null,
+  date2: Date | string | null = null,
+  tags: Record<string, string> = {},
+): Posting {
+  if (typeof statusOrBlock === "function") {
+    const posting = new Posting(account);
+    statusOrBlock(posting);
+    return posting;
+  }
+  const posting = new Posting(
+    account,
+    statusOrBlock,
+    amount,
+    balance,
+    comment,
+    date,
+    date2,
+    tags,
+  );
+  return posting;
+}
+
+export const p = posting;
+export const po = posting;
