@@ -1,9 +1,9 @@
-import { Comment, ToComment } from "../entities/comment";
-import { ToCostedAmount } from "../entities/costed_amount";
-import { Journal } from "../entities/journal";
-import { Posting } from "../entities/posting";
-import { Status } from "../entities/status";
-import { Transaction } from "../entities/transaction";
+import { Comment, ToComment } from "./entities/comment";
+import { ToCostedAmount } from "./entities/costed_amount";
+import { Journal } from "./entities/journal";
+import { Posting } from "./entities/posting";
+import { Status } from "./entities/status";
+import { Transaction } from "./entities/transaction";
 
 type JournalBlock = (journal: JournalDSL) => void;
 type TransactionBlock = (transaction: TransactionDSL) => void;
