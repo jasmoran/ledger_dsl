@@ -9,7 +9,7 @@ type JournalBlock = (journal: JournalDSL) => void;
 type TransactionBlock = (transaction: TransactionDSL) => void;
 type PostingBlock = (posting: Posting) => void;
 
-class TransactionDSL extends Transaction {
+export class TransactionDSL extends Transaction {
   /**
    * Adds a posting to the transaction.
    *
@@ -100,7 +100,7 @@ class TransactionDSL extends Transaction {
   public co = this.comment;
 }
 
-class JournalDSL extends Journal {
+export class JournalDSL extends Journal {
   /**
    * Adds a transaction to the journal.
    *
