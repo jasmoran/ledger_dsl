@@ -118,6 +118,7 @@ export class JournalDSL extends Journal {
     code?: string | null,
     payee?: string | null,
     note?: string | null,
+    date2?: Date | null,
     tags?: Record<string, string>,
   ): TransactionDSL;
   /**
@@ -148,6 +149,7 @@ export class JournalDSL extends Journal {
     code: string | null = null,
     payee: string | null = null,
     note: string | null = null,
+    date2: Date | null = null,
     tags: Record<string, string> = {},
   ): TransactionDSL {
     if (Array.isArray(statusOrBlockOrEntries)) {
@@ -167,6 +169,7 @@ export class JournalDSL extends Journal {
       code,
       payee,
       note,
+      date2,
       tags,
     );
     this.addEntry(transaction);
@@ -272,6 +275,7 @@ export function transaction(
   code?: string | null,
   payee?: string | null,
   note?: string | null,
+  date2?: Date | null,
   tags?: Record<string, string>,
 ): TransactionDSL;
 /**
@@ -305,6 +309,7 @@ export function transaction(
   code: string | null = null,
   payee: string | null = null,
   note: string | null = null,
+  date2: Date | null = null,
   tags: Record<string, string> = {},
 ): TransactionDSL {
   if (Array.isArray(statusOrBlockOrEntries)) {
@@ -321,6 +326,7 @@ export function transaction(
     code,
     payee,
     note,
+    date2,
     tags,
   );
   return transaction;

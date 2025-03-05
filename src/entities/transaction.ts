@@ -7,6 +7,7 @@ import { Status } from "./status";
  */
 export class Transaction {
   #date: Date;
+  #date2: Date | null = null;
   public status: Status = Status.Unmarked;
   public code: string | null = null;
   public payee: string | null = null;
@@ -20,6 +21,7 @@ export class Transaction {
     code?: string | null,
     payee?: string | null,
     note?: string | null,
+    date2?: Date | null,
     tags?: Record<string, string>,
   );
   constructor(date: Date | string, entries: Array<Posting | Comment>);
@@ -29,9 +31,11 @@ export class Transaction {
     code: string | null = null,
     payee: string | null = null,
     note: string | null = null,
+    date2: Date | null = null,
     tags: Record<string, string> = {},
   ) {
     this.#date = new Date(date);
+    this.date2 = date2;
     this.code = code;
     this.payee = payee;
     this.note = note;
@@ -61,6 +65,20 @@ export class Transaction {
   }
 
   /**
+   * Gets the secondary date associated with the transaction.
+   */
+  public get date2(): Date | null {
+    return this.#date2;
+  }
+
+  /**
+   * Sets the secondary date associated with the transaction.
+   */
+  public set date2(date2: Date | string | null) {
+    this.#date2 = date2 === null ? null : new Date(date2);
+  }
+
+  /**
    * Add an entry to the transaction.
    */
   protected addEntry(entry: Posting | Comment): void {
@@ -74,6 +92,10 @@ export class Transaction {
    */
   public toLedger(): string {
     let output = `${this.#date.toISOString().split("T")[0]}`;
+
+    if (this.#date2) {
+      output += `=${this.#date2?.toISOString().split("T")[0]}`;
+    }
 
     if (this.status === Status.Pending) {
       output += "! ";
