@@ -1,3 +1,4 @@
+import { formatDate } from "../ledger/date";
 import { Comment } from "./comment";
 import { Posting } from "./posting";
 import { Status } from "./status";
@@ -91,10 +92,10 @@ export class Transaction {
    * @returns The formatted ledger string.
    */
   public toLedger(): string {
-    let output = `${this.#date.toISOString().split("T")[0]}`;
+    let output = formatDate(this.#date);
 
     if (this.#date2) {
-      output += `=${this.#date2?.toISOString().split("T")[0]}`;
+      output += `=${formatDate(this.#date2)}`;
     }
 
     if (this.status === Status.Pending) {

@@ -1,6 +1,7 @@
 import { Status } from "./status";
 import { CostedAmount, ToCostedAmount } from "./costed_amount";
 import { Comment, ToComment } from "./comment";
+import { formatDate } from "../ledger/date";
 
 /**
  * Represents a posting in a financial transaction
@@ -144,10 +145,10 @@ export class Posting {
 
     const tags = new Map(this.tags);
     if (this.#date) {
-      tags.set("date", this.#date.toISOString().split("T")[0]!);
+      tags.set("date", formatDate(this.#date));
     }
     if (this.#date2) {
-      tags.set("date2", this.#date2.toISOString().split("T")[0]!);
+      tags.set("date2", formatDate(this.#date2));
     }
 
     const tagsStr = Array.from(tags.entries())

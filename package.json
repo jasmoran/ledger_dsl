@@ -16,6 +16,11 @@
       "import": "./dist/entities/index.mjs",
       "require": "./dist/entities/index.cjs",
       "types": "./dist/entities/index.d.cts"
+    },
+    "./ledger": {
+      "import": "./dist/ledger/index.mjs",
+      "require": "./dist/ledger/index.cjs",
+      "types": "./dist/ledger/index.d.cts"
     }
   },
   "files": [
